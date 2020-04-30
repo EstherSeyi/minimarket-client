@@ -2,7 +2,7 @@ import React from 'react';
 
 const App: React.FC = () => (
   <div>
-    <h1>Hello Koloo</h1>
+    <h1>Hello Minimarket</h1>
   </div>
 );
 
