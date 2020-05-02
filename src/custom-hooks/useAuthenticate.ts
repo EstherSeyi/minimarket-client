@@ -72,7 +72,21 @@ function useAuthentication(): AuthType {
     }
   };
 
-  return {auth, login, logOut};
+  //Confirm auth status
+  const confirmAuthStatus = async () => {
+    const token = await loadToken();
+
+    if (!token) {
+      dispatch(setAuthError('authentication failed'));
+      return;
+    }
+
+    if (typeof token === 'string') {
+      dispatch(setToken(token));
+    }
+  };
+
+  return {auth, login, logOut, confirmAuthStatus};
 }
 
 export default useAuthentication;
