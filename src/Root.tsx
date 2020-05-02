@@ -1,16 +1,28 @@
-import React, {lazy, Suspense} from 'react';
+import React, {Suspense} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Loading from './components/loading/Loading';
 
-const Sample = lazy(() => import('./components/sample/Sample'));
+import Loading from './components/loading/Loading';
+import routes from './routes';
+import PrivateRoute from './components/private-routes';
 
 const App: React.FC = () => (
   <Router>
     <Suspense fallback={<Loading />}>
       <Switch>
-        <Route path="/">
-          <Sample />
-        </Route>
+        {routes.map((route, idx) =>
+          route.ispublic ? (
+            <Route exact path={route.path} key={idx}>
+              <route.component />
+            </Route>
+          ) : (
+            <PrivateRoute
+              exact
+              path={route.path}
+              component={route.component}
+              key={idx}
+            />
+          ),
+        )}
       </Switch>
     </Suspense>
   </Router>
