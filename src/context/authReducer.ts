@@ -8,6 +8,7 @@ const reducer = (state: AuthState, action: Action): AuthState => {
         ...state,
         token: action.payload,
         loggedOut: false,
+        authenticated: true,
       };
 
     case 'SET_LOADING':
