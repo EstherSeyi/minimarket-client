@@ -26,6 +26,13 @@ const reducer = (state: AuthState, action: Action): AuthState => {
         errorMessage: action.payload,
       };
 
+    case 'SET_AUTH_ERROR':
+      return {
+        ...state,
+        authenticated: false,
+        errorMessage: action.payload,
+      };
+
     case 'LOG_OUT':
       return {
         ...state,
