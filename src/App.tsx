@@ -1,17 +1,20 @@
 import React from 'react';
 import Root from './Root';
-
-import ErrorBoundary from './ErrorBoundary';
-import {AuthContextProvider} from './context/AuthContext';
+import {useAuth} from './context/AuthContext';
+import Loading from './components/loading';
 
 const App: React.FC = () => {
-  return (
-    <ErrorBoundary>
-      <AuthContextProvider>
-        <Root />
-      </AuthContextProvider>
-    </ErrorBoundary>
-  );
+  const {auth, confirmAuthStatus} = useAuth();
+
+  React.useEffect(() => {
+    confirmAuthStatus();
+  }, [confirmAuthStatus]);
+
+  if (auth.authenticated === null) {
+    return <Loading />;
+  }
+
+  return <Root />;
 };
 
 export default App;
