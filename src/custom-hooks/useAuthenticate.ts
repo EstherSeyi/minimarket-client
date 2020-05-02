@@ -7,10 +7,11 @@ import {
   setError,
   logoutUser,
   setErrorMessage,
+  setAuthError,
 } from '../context/actionCreators';
 
 import request from '../utils/request';
-import {saveToken, deleteFromLocalforage} from '../utils/storage';
+import {saveToken, deleteFromLocalforage, loadToken} from '../utils/storage';
 import {LoginFormValues, AuthType} from '../types';
 
 const initialAuthState = {
