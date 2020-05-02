@@ -3,6 +3,7 @@ export interface AuthState {
   error: boolean;
   token: string;
   loggedOut: null | boolean;
+  authenticated: null | boolean;
   errorMessage: string;
 }
 
@@ -24,4 +25,5 @@ export interface AuthType {
   ) => Promise<void>;
 
   logOut: () => Promise<void>;
+  confirmAuthStatus: () => Promise<void | undefined>;
 }
