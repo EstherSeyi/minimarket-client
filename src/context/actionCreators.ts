@@ -21,6 +21,13 @@ export const setErrorMessage = (
   payload,
 });
 
+export const setAuthError = (
+  payload: string,
+): {type: string; payload: string} => ({
+  type: 'SET_AUTH_ERROR',
+  payload,
+});
+
 export const logoutUser = (
   payload: null | boolean,
 ): {type: string; payload: null | boolean} => ({
