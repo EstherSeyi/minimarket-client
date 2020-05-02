@@ -19,6 +19,7 @@ const initialAuthState = {
   token: '',
   loggedOut: null,
   errorMessage: '',
+  authenticated: null,
 };
 
 function useAuthentication(): AuthType {
