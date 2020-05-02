@@ -36,7 +36,7 @@ const reducer = (state: AuthState, action: Action): AuthState => {
     case 'LOG_OUT':
       return {
         ...state,
-
+        authenticated: null,
         loggedOut: action.payload,
       };
     default:
