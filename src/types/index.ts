@@ -5,6 +5,7 @@ export interface AuthState {
   loggedOut: null | boolean;
   authenticated: null | boolean;
   errorMessage: string;
+  authError: string;
 }
 
 export type Action = {

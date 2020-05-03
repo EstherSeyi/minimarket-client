@@ -21,6 +21,7 @@ const initialAuthState = {
   loggedOut: null,
   errorMessage: '',
   authenticated: null,
+  authError: '',
 };
 
 function useAuthentication(): AuthType {
@@ -44,6 +45,7 @@ function useAuthentication(): AuthType {
 
       // navigateToDashboard('transactions');
     } catch (error) {
+      console.log(error);
       dispatch(setError(true));
 
       if (error.response) {
@@ -63,7 +65,6 @@ function useAuthentication(): AuthType {
   const logOut = async () => {
     try {
       await deleteFromLocalforage('token');
-      await deleteFromLocalforage('id');
       dispatch(logoutUser(true));
     } catch (error) {
       console.log(error.message, 'ERRO MESSAGE');
