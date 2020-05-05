@@ -1,20 +1,19 @@
 import React from 'react';
+
+import {Provider} from 'react-redux';
+
 import Root from './Root';
-import {useAuth} from './context/AuthContext';
-import Loading from './components/loading';
+import ErrorBoundary from './ErrorBoundary';
+import store from './store';
 
 const App: React.FC = () => {
-  const {auth, confirmAuthStatus} = useAuth();
-
-  React.useEffect(() => {
-    confirmAuthStatus();
-  }, [confirmAuthStatus]);
-
-  if (auth.authenticated === null) {
-    return <Loading />;
-  }
-
-  return <Root />;
+  return (
+    <ErrorBoundary>
+      <Provider store={store}>
+        <Root />
+      </Provider>
+    </ErrorBoundary>
+  );
 };
 
 export default App;
