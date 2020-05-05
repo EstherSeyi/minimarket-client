@@ -1,21 +1,28 @@
 import React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
 
-import {useAuth} from '../../context/AuthContext';
+import {useSelector} from 'react-redux';
 
 interface PrivateRouteProps extends RouteProps {
   component: any;
 }
 
 const PrivateRoute = (props: PrivateRouteProps) => {
-  const {auth} = useAuth();
+  const {authentication} = useSelector(
+    (authentication: {authentication: {token: string}}) => authentication,
+  );
+
   const {component: Component, ...rest} = props;
 
   return (
     <Route
       {...rest}
       render={props =>
-        auth.token !== '' ? <Component {...props} /> : <Redirect to="/logout" />
+        authentication.token ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/logout" />
+        )
       }
     />
   );
