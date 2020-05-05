@@ -23,8 +23,7 @@ const Home: React.FC = () => {
           <Link
             to="markets"
             spy={true}
-            // smooth={true}
-            smooth="easeInOutQuint"
+            smooth={true}
             offset={-70}
             duration={500}
             delay={0}
@@ -37,7 +36,7 @@ const Home: React.FC = () => {
       </section>
       <section>
         <Container>
-          <section className="market-grid">
+          <section id="markets" className="market-grid">
             <h1 className="title">All Markets</h1>
             <div className="market"></div>
             <div className="market"></div>
