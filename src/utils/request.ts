@@ -1,13 +1,13 @@
 import Axios from 'axios';
-import {loadToken} from './storage';
-
-const token = loadToken();
+import store from '../store';
 
 const instance = Axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,
 });
 
-instance.interceptors.request.use((config: any) => {
+instance.interceptors.request.use(config => {
+  const {token} = store.getState().authentication;
+
   if (token) {
     return {
       ...config,
