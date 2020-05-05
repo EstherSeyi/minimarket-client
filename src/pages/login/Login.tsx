@@ -1,17 +1,25 @@
 import React from 'react';
-import {withRouter, RouteComponentProps} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import {Formik, Field} from 'formik';
 import * as Yup from 'yup';
 import BeatLoader from 'react-spinners/BeatLoader';
+import {connect, useSelector} from 'react-redux';
 
+import login from '../../redux/actions/login.action';
 import './styles.css';
-
-import {useAuth} from '../../context/AuthContext';
 import {LoginFormValues} from '../../types/';
 import FormError from '../../components/form/FormError';
 
-const App = ({history}: RouteComponentProps) => {
-  const {login, auth} = useAuth();
+const App = ({history, login}: {history: any; login: any}) => {
+  const {errorMessage} = useSelector(
+    (error: {error: boolean; errorMessage: string}) => error,
+  );
+
+  const {authentication} = useSelector(
+    (authentication: {authentication: {loading: boolean; token: string}}) =>
+      authentication,
+  );
+  const {loading} = authentication;
 
   const initialValues: LoginFormValues = {
     email: '',
@@ -36,14 +44,9 @@ const App = ({history}: RouteComponentProps) => {
                 .min(6, 'must 6 characters or more')
                 .required('Please provide password'),
             })}
-            onSubmit={async (
-              values: LoginFormValues,
-              {setSubmitting},
-            ): Promise<void> => {
-              const navigateToDashboard = () => history.push('/');
+            onSubmit={async (values: LoginFormValues): Promise<void> => {
+              const navigateToDashboard = () => history.push('/view');
               console.log(values);
-
-              setSubmitting(false);
               await login(values, navigateToDashboard);
             }}
           >
@@ -52,7 +55,7 @@ const App = ({history}: RouteComponentProps) => {
                 className="form-horizontal m-t-30"
                 onSubmit={formik.handleSubmit}
               >
-                <FormError error={auth.errorMessage} />
+                <FormError error={errorMessage} />
                 <div className="form-group">
                   <label htmlFor="username">Email address</label>
 
@@ -102,9 +105,9 @@ const App = ({history}: RouteComponentProps) => {
                     <button
                       className="btn btn-primary w-md waves-effect waves-light"
                       type="submit"
-                      disabled={auth.loading}
+                      disabled={loading}
                     >
-                      {auth.loading ? (
+                      {loading ? (
                         <BeatLoader size={5} color="#fff" />
                       ) : (
                         'Log In'
@@ -129,4 +132,8 @@ const App = ({history}: RouteComponentProps) => {
   );
 };
 
-export default withRouter(App);
+const mapDispatchToProps = {
+  login,
+};
+
+export default withRouter(connect(null, mapDispatchToProps)(App));
