@@ -46,7 +46,7 @@ const App = ({history, login}: {history: any; login: any}) => {
             })}
             onSubmit={async (values: LoginFormValues): Promise<void> => {
               const navigateToDashboard = () => history.push('/view');
-              console.log(values);
+
               await login(values, navigateToDashboard);
             }}
           >
