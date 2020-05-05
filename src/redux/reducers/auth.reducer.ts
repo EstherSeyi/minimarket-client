@@ -10,7 +10,7 @@ export default function authentication(state = initialState, action: any) {
         ...state,
         token: action.payload,
       };
-    case 'LOADING':
+    case 'SET_LOADING':
       return {
         ...state,
         loading: action.payload,
