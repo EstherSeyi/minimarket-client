@@ -1,0 +1,147 @@
+.hero {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.hero-image {
+  background-image: url('../../static/images/market.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #1a290e;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #6333336e;
+  z-index: 0;
+}
+
+.main-section {
+  color: #fff;
+  text-align: center;
+  position: relative;
+  top: -4em;
+}
+
+.hero .arrow {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 0.2em;
+  color: #fff !important;
+}
+
+.hero .arrow-active {
+  display: none;
+}
+
+.markets-title {
+  text-align: center;
+}
+
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 18rem));
+  grid-gap: 1em;
+  justify-content: center;
+}
+
+.market-grid .footer {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.market-grid .location {
+  padding: 0.4em;
+}
+.btn {
+  display: inline-block;
+  padding: 0.5em 1.5em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 1px;
+  border: 0;
+  cursor: pointer;
+  margin-right: 1em;
+}
+
+.btn-primary {
+  background: linear-gradient(to left, #07393c, #0d5d56);
+  color: #48bf84;
+  transform: scale(1);
+  transition: transform 250ms;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  transform: scale(1.1);
+}
+.btn-primary:active {
+  transform: scale(0.9);
+}
+
+.action button:last-child {
+  margin-right: 0;
+}
+
+.heading {
+  margin-bottom: 0.5em;
+  font-weight: 700;
+  font-size: 2.25rem;
+}
+
+.sub-heading {
+  margin-bottom: 1em;
+  font-size: 1.3125rem;
+  letter-spacing: 2px;
+}
+
+.market-grid {
+  display: grid;
+  grid-template-columns: minmax(1em, 1fr);
+  grid-gap: 2em;
+}
+
+.market {
+  border: 1px solid black;
+  padding: 8em 5em;
+}
+
+.title {
+  grid-column: 1/-1;
+  text-align: center;
+  margin-top: 1em;
+}
+
+@media (min-width: 800px) {
+  .market-grid {
+    display: grid;
+    grid-template-columns: minmax(1em, 1fr) minmax(1em, 1fr);
+    grid-gap: 2em;
+  }
+}
+
+@media (min-width: 1100px) {
+  .market-grid {
+    display: grid;
+    grid-template-columns: minmax(1em, 1fr) minmax(1em, 1fr) minmax(1em, 1fr);
+    grid-gap: 2em;
+  }
+}
