@@ -1,54 +1,69 @@
-import React, {useState} from 'react';
-import {Table} from 'antd';
-import {DeleteTwoTone, EditTwoTone, LoadingOutlined} from '@ant-design/icons';
+import React, {useState, useEffect} from 'react';
+import Table from 'antd/lib/table';
+import {DeleteTwoTone, LoadingOutlined, LinkOutlined} from '@ant-design/icons';
+import {connect, useSelector} from 'react-redux';
+import Tag from 'antd/lib/tag';
 
 import {Container} from '../../components/container';
+import getMarkets, {deleteMarkets} from '../../redux/actions/market.action';
+import Header from '../../components/dashboard/Header';
+import CreateMarket from '../../components/dashboard/CreateMarket';
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-  {
-    title: 'Category',
-    dataIndex: 'category',
-  },
-];
+//EditTwoTone,
 
-const data: any = [];
-for (let i = 0; i < 20; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`,
-  });
-}
+const App = (props: {getMarkets: any; deleteMarkets: any}) => {
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+    },
+    {
+      title: 'Food Category',
+      dataIndex: 'foodCategory',
+      key: 'foodCategory',
+      render: (text: string) => <Tag color={'geekblue'}>{text}</Tag>,
+    },
+    {
+      title: 'Images',
+      dataIndex: 'images',
+      key: 'image',
+      render: (text: string) => (
+        <a href={text}>
+          <LinkOutlined />
+        </a>
+      ),
+    },
+  ];
 
-const App = () => {
-  const [loading, setLoading] = useState(false);
+  const {markets} = useSelector(
+    (markets: {markets: {loading: boolean; data: any}}) => markets,
+  );
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
+  const handleForm = () => {
+    setShowForm(prevState => !prevState);
+  };
 
-      setLoading(false);
-    }, 1000);
+  const {data, loading} = markets;
+
+  useEffect(() => {
+    props.getMarkets();
+  }, [props]);
+
+  const del = async () => {
+    await props.deleteMarkets(selectedRowKeys);
   };
 
   const onSelectChange = (selectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   };
 
@@ -59,21 +74,46 @@ const App = () => {
   const hasSelected = selectedRowKeys.length > 0;
   return (
     <Container>
-      <div style={{marginBottom: 16}}>
-        {loading ? (
-          <LoadingOutlined />
-        ) : (
-          <DeleteTwoTone onClick={start} disabled={!hasSelected} />
-        )}
+      <Header handleForm={handleForm} showForm={showForm} />
 
-        <EditTwoTone onClick={start} disabled={!hasSelected} />
-        <span style={{marginLeft: 8}}>
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-        </span>
-      </div>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      {!showForm ? (
+        <>
+          <div style={{marginBottom: 16}}>
+            {loading ? (
+              <LoadingOutlined />
+            ) : (
+              <DeleteTwoTone onClick={del} disabled={!hasSelected} />
+            )}
+
+            <span style={{marginLeft: 8}}>
+              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+            </span>
+          </div>
+          <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={data.map((item: any) => {
+              return {
+                key: item._id,
+                description: item.description,
+                foodCategory: item.foodCategory,
+                name: item.name,
+                address: item.address,
+                images: item.images[0],
+              };
+            })}
+          />
+        </>
+      ) : (
+        <CreateMarket />
+      )}
     </Container>
   );
 };
 
-export default App;
+const mapDispatchToProps = {
+  getMarkets,
+  deleteMarkets,
+};
+
+export default connect(null, mapDispatchToProps)(App);
