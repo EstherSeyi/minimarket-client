@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import Card from 'antd/lib/card';
 import {connect, useSelector} from 'react-redux';
 import BeatLoader from 'react-spinners/BeatLoader';
-import notification from 'antd/lib/notification';
 
 import uploadImg from '../../redux/actions/images.action';
 import {createMarket} from '../../redux/actions/market.action';
@@ -29,16 +28,6 @@ const App = ({
   const {errorMessage} = useSelector(
     (error: {error: boolean; errorMessage: string}) => error,
   );
-
-  const [api, contextHolder] = notification.useNotification();
-
-  const openNotification = (placement: any) => {
-    api.info({
-      message: 'Market Created!',
-      description: 'Success Notification',
-      placement,
-    });
-  };
 
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -66,8 +55,6 @@ const App = ({
     setImageLinks(imgArray);
 
     setLoading(false);
-
-    console.log(imageLinks);
   };
 
   return (
@@ -90,7 +77,6 @@ const App = ({
           foodCategory: Yup.string().required('Please choose food category'),
         })}
         onSubmit={async (values: MarketForm): Promise<void> => {
-          console.log(values);
           if (!imageLinks || imageLinks.length === 0 || imageLinks.length > 3) {
             setImageError('Please provide 3 images');
             return;
@@ -107,8 +93,6 @@ const App = ({
 
           await createMarket({...payload, images: imageLinks});
           setProcessing(false);
-
-          openNotification('bottomLeft');
         }}
       >
         {formik => (
