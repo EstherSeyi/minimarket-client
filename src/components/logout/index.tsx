@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
-import {useAuth} from '../../context/AuthContext';
+import {useDispatch} from 'react-redux';
+
+import {signout} from '../../redux/actions/login.action';
 
 const Logout = ({history}: RouteComponentProps) => {
-  const {logOut} = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    logOut();
+    dispatch(signout());
     history.push('/login');
-  }, [history, logOut]);
-
+  }, [history, dispatch]);
   return (
     <React.Fragment>
       <h1>&nbsp;</h1>
