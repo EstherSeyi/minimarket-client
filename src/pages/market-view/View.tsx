@@ -1,56 +1,60 @@
 import React, {useState, useEffect} from 'react';
 import Table from 'antd/lib/table';
-import {DeleteTwoTone, LoadingOutlined, LinkOutlined} from '@ant-design/icons';
+import {DeleteTwoTone, LoadingOutlined} from '@ant-design/icons';
 import {connect, useSelector} from 'react-redux';
-import Tag from 'antd/lib/tag';
 
 import {Container} from '../../components/container';
 import getMarkets, {deleteMarkets} from '../../redux/actions/market.action';
 import Header from '../../components/dashboard/Header';
 import CreateMarket from '../../components/dashboard/CreateMarket';
-
-//EditTwoTone,
+import {columns} from './columns';
+import UpdateMarket from '../../components/dashboard/UpdateMarket';
 
 const App = (props: {getMarkets: any; deleteMarkets: any}) => {
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-    },
-    {
-      title: 'Food Category',
-      dataIndex: 'foodCategory',
-      key: 'foodCategory',
-      render: (text: string) => <Tag color={'geekblue'}>{text}</Tag>,
-    },
-    {
-      title: 'Images',
-      dataIndex: 'images',
-      key: 'image',
-      render: (text: string) => (
-        <a href={text}>
-          <LinkOutlined />
-        </a>
-      ),
-    },
-  ];
-
   const {markets} = useSelector(
     (markets: {markets: {loading: boolean; data: any}}) => markets,
   );
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [showForm, setShowForm] = useState(false);
 
-  const handleForm = () => {
-    setShowForm(prevState => !prevState);
+  const [dashState, setDashState] = useState({
+    create: false,
+    edit: false,
+    dash: true,
+  });
+
+  const handleCreate = () => {
+    setDashState(prevState => ({
+      ...prevState,
+      create: true,
+      edit: false,
+      dash: false,
+    }));
+  };
+
+  const handleEdit = () => {
+    setDashState(prevState => ({
+      ...prevState,
+      create: false,
+      edit: true,
+      dash: false,
+    }));
+  };
+
+  const handleDash = () => {
+    setDashState(prevState => ({
+      ...prevState,
+      create: false,
+      edit: false,
+      dash: true,
+    }));
+  };
+
+  const [updateMarket, setUpdateMarket] = useState({});
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const [selectionType, setSelectionType] = useState<any>('checkbox');
+
+  const handleSelectionType = () => {
+    setSelectionType('radio');
   };
 
   const {data, loading} = markets;
@@ -65,6 +69,15 @@ const App = (props: {getMarkets: any; deleteMarkets: any}) => {
 
   const onSelectChange = (selectedRowKeys: any) => {
     setSelectedRowKeys(selectedRowKeys);
+
+    if (selectionType === 'radio') {
+      setUpdateMarket(
+        data.find((item: any) => item._id === selectedRowKeys[0]),
+      );
+
+      handleEdit();
+      return;
+    }
   };
 
   const rowSelection = {
@@ -74,9 +87,14 @@ const App = (props: {getMarkets: any; deleteMarkets: any}) => {
   const hasSelected = selectedRowKeys.length > 0;
   return (
     <Container>
-      <Header handleForm={handleForm} showForm={showForm} />
+      <Header
+        handleSelectionType={handleSelectionType}
+        handleDash={handleDash}
+        handleCreate={handleCreate}
+        dashState={dashState}
+      />
 
-      {!showForm ? (
+      {dashState.dash ? (
         <>
           <div style={{marginBottom: 16}}>
             {loading ? (
@@ -90,7 +108,10 @@ const App = (props: {getMarkets: any; deleteMarkets: any}) => {
             </span>
           </div>
           <Table
-            rowSelection={rowSelection}
+            rowSelection={{
+              type: selectionType,
+              ...rowSelection,
+            }}
             columns={columns}
             dataSource={data.map((item: any) => {
               return {
@@ -104,8 +125,10 @@ const App = (props: {getMarkets: any; deleteMarkets: any}) => {
             })}
           />
         </>
-      ) : (
+      ) : dashState.create ? (
         <CreateMarket />
+      ) : (
+        <UpdateMarket data={updateMarket} />
       )}
     </Container>
   );
