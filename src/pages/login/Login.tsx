@@ -85,43 +85,14 @@ const App = ({history, login}: {history: any; login: any}) => {
                   ) : null}
                 </div>
 
-                <div className="form-group row m-t-20">
-                  <div className="col-sm-6">
-                    <div className="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        className="custom-control-input"
-                        id="customControlInline"
-                      />
-                      <label
-                        className="custom-control-label"
-                        htmlFor="customControlInline"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-                  <div className="col-sm-6 text-right">
-                    <button
-                      className="btn btn-primary w-md waves-effect waves-light"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <BeatLoader size={5} color="#fff" />
-                      ) : (
-                        'Log In'
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="form-group m-t-10 mb-0 row">
-                  <div className="col-12 m-t-20">
-                    <a href="recoverpw.html">
-                      <i className="mdi mdi-lock"></i> Forgot your password?
-                    </a>
-                  </div>
+                <div className="form-group ">
+                  <button
+                    className="btn btn-primary w-md waves-effect waves-light"
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? <BeatLoader size={5} color="#fff" /> : 'Log In'}
+                  </button>
                 </div>
               </form>
             )}
