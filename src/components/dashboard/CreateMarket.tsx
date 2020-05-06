@@ -12,7 +12,6 @@ import {createMarket} from '../../redux/actions/market.action';
 import {MarketForm} from '../../types/index';
 import FormError from '../form/FormError';
 
-const Context = React.createContext({name: 'Default'});
 const initialValues: MarketForm = {
   marketname: '',
   foodCategory: '',
@@ -41,11 +40,10 @@ const App = ({
   const [imageLinks, setImageLinks] = useState([]);
   const [imageError, setImageError] = useState('');
 
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (placement: any) => {
-    api.info({
+  const openNotification = (placement: any, mess: string) => {
+    notification.info({
       message: 'Success Admin!',
-      description: <Context.Consumer>{({name}) => name}</Context.Consumer>,
+      description: mess,
       placement,
     });
   };
@@ -71,10 +69,7 @@ const App = ({
 
   return (
     <Card title="New Market" bordered={true}>
-      <Context.Provider value={{name: 'Market Successfully Created'}}>
-        {contextHolder}
-        <RadiusBottomrightOutlined />
-      </Context.Provider>
+      <RadiusBottomrightOutlined />
 
       <Formik
         initialValues={initialValues}
