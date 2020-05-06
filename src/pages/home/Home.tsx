@@ -1,17 +1,52 @@
-import React from 'react';
-import {Tooltip} from 'antd';
+import React, {useEffect, useState} from 'react';
+import Tooltip from 'antd/lib/tooltip';
 import {MdLocationOn} from 'react-icons/md';
 import {BsArrowDown} from 'react-icons/bs';
 import {Link} from 'react-scroll';
 import {Link as RouteLink} from 'react-router-dom';
+import Truncate from 'react-truncate';
+import {connect, useSelector} from 'react-redux';
+import Pagination from 'antd/lib/pagination';
 
 import {Container} from '../../components/container';
+import getMarkets from '../../redux/actions/market.action';
 import {FormModal} from './modal';
-import dummy from '../../static/images/dummy.jpg';
+import FindMarketForm from './FindMarketForm';
+import GetNearestForm from './GetNearestForm';
+
 import 'animate.css';
 import './home.css';
 
-const Home: React.FC = () => {
+const Home = (props: {getMarkets: any}) => {
+  useEffect(() => {
+    props.getMarkets();
+  }, [props]);
+
+  const {markets} = useSelector(
+    (markets: {markets: {loading: boolean; data: any}}) => markets,
+  );
+
+  const {data} = markets;
+
+  const [page, setPage] = useState({
+    minValue: 0,
+    maxValue: 6,
+  });
+
+  const handleChange = (value: any) => {
+    if (value <= 1) {
+      setPage(prevState => ({...prevState, minValue: 0, maxValue: 6}));
+    } else {
+      setPage(prevState => ({
+        ...prevState,
+        minValue: page.maxValue,
+        maxValue: value * 6,
+      }));
+    }
+  };
+
+  console.log(markets, 'DASHBOARD');
+
   return (
     <>
       <section className="hero hero-image">
@@ -21,8 +56,12 @@ const Home: React.FC = () => {
             <h1 className="heading">Mini Market</h1>
             <p className="sub-heading">Search for markets around you</p>
             <p className="action">
-              <FormModal btnText="find a market" />
-              <FormModal btnText="get nearest market" />
+              <FormModal btnText="find a market">
+                <FindMarketForm />
+              </FormModal>
+              <FormModal btnText="get nearest market">
+                <GetNearestForm />
+              </FormModal>
             </p>
           </main>
           <Link
@@ -45,28 +84,54 @@ const Home: React.FC = () => {
             All Markets
           </h1>
           <section className="market-grid">
-            {new Array(10).fill(0).map((_, index) => (
-              <RouteLink key={index} to="#">
-                <div className="market">
-                  <div className="market-image">
-                    <img src={dummy} alt="" />
-                  </div>
-                  <div className="market-body">
-                    <div className="title">Lorem ipsum dolor sit</div>
-                    <div className="market-footer">
-                      <div>Category</div>
-                      <div>
-                        <Tooltip title="Location" trigger={['click', 'hover']}>
-                          <MdLocationOn
-                            style={{fontSize: '1.5rem', color: '#227c9d'}}
-                          />
+            {data &&
+              data.length > 0 &&
+              data.slice(page.minValue, page.maxValue).map((market: any) => (
+                <RouteLink key={market._id} to="#">
+                  <div className="market">
+                    <div className="market-image">
+                      <img src={market.images[0]} alt={`${market.name}`} />
+                    </div>
+                    <div className="market-body">
+                      <div className="title">
+                        <Tooltip
+                          title={`${market.name}`}
+                          trigger={['click', 'hover']}
+                        >
+                          <Truncate
+                            lines={1}
+                            ellipsis={<span>... </span>}
+                            width={200}
+                          >
+                            {`${market.name}`}
+                          </Truncate>
                         </Tooltip>
+                      </div>
+                      <div className="market-footer">
+                        <div className="food-cat">{market.foodCategory}</div>
+                        <div>
+                          <Tooltip
+                            title={`${market.address}`}
+                            trigger={['click', 'hover']}
+                          >
+                            <MdLocationOn
+                              style={{fontSize: '1.5rem', color: '#227c9d'}}
+                            />
+                          </Tooltip>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </RouteLink>
-            ))}
+                </RouteLink>
+              ))}
+            <Pagination
+              className="pagination"
+              defaultCurrent={1}
+              defaultPageSize={6}
+              onChange={handleChange}
+              total={data.length}
+              showQuickJumper
+            />
           </section>
         </Container>
       </section>
@@ -74,4 +139,8 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+const mapDispatchToProps = {
+  getMarkets,
+};
+
+export default connect(null, mapDispatchToProps)(Home);
