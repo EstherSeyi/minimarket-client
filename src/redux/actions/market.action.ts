@@ -65,13 +65,17 @@ export const deleteMarkets = (ids: any) => async (dispatch: AppDispatch) => {
   }
 };
 
-export const createMarket = (data: any) => async (dispatch: AppDispatch) => {
+export const createMarket = (data: any, openNotification: any) => async (
+  dispatch: AppDispatch,
+) => {
   try {
     dispatch(setLoading(true));
 
     await request.post('/market', data);
 
     dispatch(setLoading(false));
+
+    openNotification('bottomRight');
   } catch (error) {
     dispatch(setError(true));
 
