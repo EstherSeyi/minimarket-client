@@ -28,7 +28,8 @@ const App = ({
     foodCategory: data.foodCategory,
     description: data.description,
     images: data.images,
-    address: data.address,
+    lat: data.lat,
+    lng: data.lng,
   };
 
   const [loading, setLoading] = useState(false);
@@ -68,14 +69,18 @@ const App = ({
             .min(2, 'Must be more than 1 characters')
             .max(255, 'Must be 255 characters or less')
             .required('Please provide market description!'),
-          address: Yup.string()
+          lat: Yup.string()
             .min(2, 'Must be more than 1 characters')
-            .max(255, 'Must be 255 characters or less')
-            .required('Please provide market address!'),
+            .max(10, 'Must be 10 characters or less')
+            .required('Please provide latitude!'),
+          lng: Yup.string()
+            .min(2, 'Must be more than 1 characters')
+            .max(10, 'Must be 10 characters or less')
+            .required('Please provide longitude!'),
           foodCategory: Yup.string().required('Please choose food category'),
         })}
         onSubmit={async (values: MarketForm): Promise<void> => {
-          const {marketname, ...rest} = values;
+          const {marketname, lat, lng, ...rest} = values;
 
           if (imageLinks.length > 3) {
             setImageError('Please provide 3 images');
@@ -84,9 +89,12 @@ const App = ({
 
           setProcessing(true);
 
-          console.log({id: data._id, name: values.marketname, ...rest});
-
-          await updateMarket({id: data._id, name: values.marketname, ...rest});
+          await updateMarket({
+            id: data._id,
+            name: values.marketname,
+            latlng: `${values.lat},${values.lng}`,
+            ...rest,
+          });
           setProcessing(false);
         }}
       >
@@ -143,16 +151,27 @@ const App = ({
               ) : null}
             </div>
             <div className="form-group">
-              <label htmlFor="address">Address</label>
+              <label htmlFor="lat">Latitude</label>
               <Field
                 type="text"
-                name="address"
-                as="textarea"
+                name="lat"
                 className="form-control"
-                placeholder="Enter Address"
+                placeholder="Enter Latitude"
               />
-              {formik.touched.address && formik.errors.address ? (
-                <small style={{color: 'red'}}>{formik.errors.address}</small>
+              {formik.touched.lat && formik.errors.lat ? (
+                <small style={{color: 'red'}}>{formik.errors.lat}</small>
+              ) : null}
+            </div>
+            <div className="form-group">
+              <label htmlFor="lng">Longitude</label>
+              <Field
+                type="text"
+                name="lng"
+                className="form-control"
+                placeholder="Enter Longitude"
+              />
+              {formik.touched.lng && formik.errors.lng ? (
+                <small style={{color: 'red'}}>{formik.errors.lng}</small>
               ) : null}
             </div>
 
