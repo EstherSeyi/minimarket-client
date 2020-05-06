@@ -138,11 +138,19 @@ const App = ({
             <div className="form-group">
               <label htmlFor="foodCategory">Food Category</label>
               <Field
-                type="text"
+                as="select"
                 name="foodCategory"
                 className="form-control"
                 placeholder="Enter food category"
-              />
+              >
+                <option disabled>Select Food Category</option>
+                <option value="fruits">Fruits</option>
+                <option value="sea food">Sea Food</option>
+                <option value="general groceries">General Groceries</option>
+                <option value="junk food">Junk Food</option>
+                <option value="staples">Staples</option>
+                <option value="meat">Meat</option>
+              </Field>
 
               {formik.touched.foodCategory && formik.errors.foodCategory ? (
                 <small style={{color: 'red'}}>
