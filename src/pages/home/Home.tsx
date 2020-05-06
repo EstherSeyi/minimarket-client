@@ -115,7 +115,7 @@ const Home = (props: {getMarkets: any}) => {
                             trigger={['click', 'hover']}
                           >
                             <MdLocationOn
-                              style={{fontSize: '1.5rem', color: '#227c9d'}}
+                              style={{fontSize: '1rem', color: '#227c9d'}}
                             />
                           </Tooltip>
                         </div>
