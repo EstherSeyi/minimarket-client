@@ -14,6 +14,7 @@ store.subscribe(
   throttle(() => {
     saveState({
       authentication: store.getState().authentication,
+      markets: store.getState().markets,
     });
   }, 1000),
 );
