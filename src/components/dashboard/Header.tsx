@@ -10,19 +10,16 @@ const App = ({
   dashState,
   handleCreate,
   handleSelectionType,
-  history,
 }: {
   handleDash: any;
   dashState: any;
   handleCreate: any;
   handleSelectionType: any;
-  history?: any;
 }) => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(signout());
-    return history.push('/logout');
   };
 
   return (
