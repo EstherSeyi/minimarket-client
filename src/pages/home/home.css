@@ -154,3 +154,13 @@
   justify-content: space-between;
   margin-top: 1em;
 }
+
+.pagination {
+  grid-column: 1/-1;
+  justify-self: center;
+  margin-bottom: 2em;
+}
+
+.food-cat {
+  text-transform: capitalize;
+}
