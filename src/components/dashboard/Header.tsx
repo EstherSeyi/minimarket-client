@@ -1,19 +1,35 @@
 import React from 'react';
-import {PageHeader, Button} from 'antd';
 
-const App = (props: {
+import {PageHeader, Button} from 'antd';
+import {useDispatch} from 'react-redux';
+
+import {signout} from '../../redux/actions/login.action';
+
+const App = ({
+  handleDash,
+  dashState,
+  handleCreate,
+  handleSelectionType,
+  history,
+}: {
   handleDash: any;
   dashState: any;
   handleCreate: any;
   handleSelectionType: any;
+  history?: any;
 }) => {
-  const {dashState} = props;
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(signout());
+    return history.push('/logout');
+  };
 
   return (
     <div className="site-page-header-ghost-wrapper">
       <PageHeader
         ghost={false}
-        onBack={() => props.handleDash()}
+        onBack={() => handleDash()}
         title={
           dashState.create
             ? 'Create Market'
@@ -26,19 +42,21 @@ const App = (props: {
           <Button
             key="1"
             type="primary"
-            onClick={() => props.handleCreate(true)}
+            onClick={() => handleCreate(true)}
             disabled={dashState.create || dashState.edit}
           >
             Create Market
           </Button>,
           <Button
             key="3"
-            onClick={() => props.handleSelectionType()}
+            onClick={() => handleSelectionType()}
             disabled={dashState.edit || dashState.create}
           >
             Edit
           </Button>,
-          <Button key="2">Logout</Button>,
+          <Button key="2" onClick={handleLogout}>
+            Logout
+          </Button>,
         ]}
       ></PageHeader>
     </div>
