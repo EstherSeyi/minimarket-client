@@ -13,5 +13,6 @@ export interface MarketForm {
   foodCategory: string;
   description: string;
   images: [];
-  address: string;
+  lat: string;
+  lng: string;
 }
