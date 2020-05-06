@@ -84,7 +84,9 @@ const App = ({
 
           setProcessing(true);
 
-          await updateMarket({name: values.marketname, ...rest});
+          console.log({id: data._id, name: values.marketname, ...rest});
+
+          await updateMarket({id: data._id, name: values.marketname, ...rest});
           setProcessing(false);
         }}
       >
