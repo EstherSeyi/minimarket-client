@@ -26,9 +26,7 @@ export function FormModal(props: ModalProps) {
         onCancel={handleCancel}
         centered
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        {props.children}
       </Modal>
     </>
   );
