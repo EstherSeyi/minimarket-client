@@ -4,12 +4,15 @@ import * as Yup from 'yup';
 import Card from 'antd/lib/card';
 import {connect, useSelector} from 'react-redux';
 import BeatLoader from 'react-spinners/BeatLoader';
+import notification from 'antd/lib/notification';
+import {RadiusBottomrightOutlined} from '@ant-design/icons';
 
 import uploadImg from '../../redux/actions/images.action';
 import {createMarket} from '../../redux/actions/market.action';
 import {MarketForm} from '../../types/index';
 import FormError from '../form/FormError';
 
+const Context = React.createContext({name: 'Default'});
 const initialValues: MarketForm = {
   marketname: '',
   foodCategory: '',
@@ -38,6 +41,15 @@ const App = ({
   const [imageLinks, setImageLinks] = useState([]);
   const [imageError, setImageError] = useState('');
 
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement: any) => {
+    api.info({
+      message: 'Success Admin!',
+      description: <Context.Consumer>{({name}) => name}</Context.Consumer>,
+      placement,
+    });
+  };
+
   const handleImage = async (e: any) => {
     const {files} = e.target;
 
@@ -59,6 +71,11 @@ const App = ({
 
   return (
     <Card title="New Market" bordered={true}>
+      <Context.Provider value={{name: 'Market Successfully Created'}}>
+        {contextHolder}
+        <RadiusBottomrightOutlined />
+      </Context.Provider>
+
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object({
@@ -76,7 +93,10 @@ const App = ({
             .required('Please provide market address!'),
           foodCategory: Yup.string().required('Please choose food category'),
         })}
-        onSubmit={async (values: MarketForm): Promise<void> => {
+        onSubmit={async (
+          values: MarketForm,
+          {setSubmitting, resetForm},
+        ): Promise<void> => {
           if (!imageLinks || imageLinks.length === 0 || imageLinks.length > 3) {
             setImageError('Please provide 3 images');
             return;
@@ -91,8 +111,13 @@ const App = ({
 
           setProcessing(true);
 
-          await createMarket({...payload, images: imageLinks});
+          await createMarket(
+            {...payload, images: imageLinks},
+            openNotification,
+          );
           setProcessing(false);
+          setSubmitting(false);
+          resetForm({});
         }}
       >
         {formik => (
