@@ -34,7 +34,7 @@ const App = ({
             ? 'Edit Market'
             : 'Dashboard'
         }
-        subTitle="This is a subtitle"
+        subTitle="Admin only view"
         extra={[
           <Button
             key="1"
