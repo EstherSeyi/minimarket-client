@@ -2,14 +2,16 @@ import React, {useState} from 'react';
 import Tooltip from 'antd/lib/tooltip';
 import Pagination from 'antd/lib/pagination';
 import Truncate from 'react-truncate';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {MdLocationOn} from 'react-icons/md';
+import {Link as RouteLink} from 'react-router-dom';
 
 import {Container} from '../../components/container';
-import {Link as RouteLink} from 'react-router-dom';
+import {setMarketId} from '../../redux/actions/market.action';
 import '../home/home.css';
 
 const App = ({searches, loading}: {searches?: any; loading?: any}) => {
+  const dispatch = useDispatch();
   const [page, setPage] = useState({
     minValue: 0,
     maxValue: 6,
@@ -27,6 +29,10 @@ const App = ({searches, loading}: {searches?: any; loading?: any}) => {
     }
   };
 
+  const handleClick = (id: string) => {
+    dispatch(setMarketId(id));
+  };
+
   return (
     <section>
       <Container>
@@ -40,7 +46,11 @@ const App = ({searches, loading}: {searches?: any; loading?: any}) => {
           {searches &&
             searches.length > 0 &&
             searches.slice(page.minValue, page.maxValue).map((market: any) => (
-              <RouteLink key={market._id} to="#">
+              <RouteLink
+                key={market._id}
+                to="/market"
+                onClick={() => handleClick(market._id)}
+              >
                 <div className="market">
                   <div className="market-image">
                     <img src={market.images[0]} alt={`${market.name}`} />
