@@ -15,6 +15,7 @@ store.subscribe(
     saveState({
       authentication: store.getState().authentication,
       markets: store.getState().markets,
+      market: store.getState().market,
     });
   }, 1000),
 );
