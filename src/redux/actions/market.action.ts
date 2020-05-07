@@ -12,6 +12,21 @@ export const setSearches = (payload: any): {type: string; payload: any} => ({
   payload,
 });
 
+export const setMarketId = (payload: any): {type: string; payload: string} => ({
+  type: 'SET_ID',
+  payload,
+});
+export const setMarket = (payload: any): {type: string; payload: string} => ({
+  type: 'SET_MARKET',
+  payload,
+});
+export const setCordinates = (
+  payload: any,
+): {type: string; payload: string} => ({
+  type: 'SET_CORDINATES',
+  payload,
+});
+
 const marketBoundActionCreator = () => async (dispatch: AppDispatch) => {
   try {
     dispatch(setLoading(true));
@@ -135,6 +150,73 @@ export const searchMarket = (data: any, navigateToDashboard: any) => async (
 
     dispatch(setLoading(false));
 
+    navigateToDashboard();
+  } catch (error) {
+    dispatch(setError(true));
+
+    if (error.response) {
+      dispatch(setErrorMessage(error.response.data.message));
+    } else if (error.request) {
+      dispatch(setErrorMessage('Please Try again'));
+    } else {
+      dispatch(setErrorMessage('Process Failed!'));
+    }
+    // console.log(error.config);
+    dispatch(setLoading(false));
+  }
+};
+export const getSingleMarket = (id: any, openNotification: any) => async (
+  dispatch: AppDispatch,
+) => {
+  try {
+    dispatch(setLoading(true));
+
+    const response = await request.get('/market/single', {
+      params: {
+        id,
+      },
+    });
+
+    dispatch(setMarket(response.data.payload.market));
+    dispatch(setCordinates(response.data.payload.geocode));
+
+    dispatch(setLoading(false));
+  } catch (error) {
+    dispatch(setError(true));
+
+    openNotification(
+      'bottomRight',
+      `${"Oops!! Couldn't load this page" || error.response.data.message}`,
+    );
+
+    if (error.response) {
+      dispatch(setErrorMessage(error.response.data.message));
+    } else if (error.request) {
+      dispatch(setErrorMessage('Please Try again'));
+    } else {
+      dispatch(setErrorMessage('Process Failed!'));
+    }
+    // console.log(error.config);
+    dispatch(setLoading(false));
+  }
+};
+
+export const getNearestMarket = (
+  address: any,
+  navigateToDashboard: any,
+) => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(setLoading(true));
+
+    const response = await request.get('/market/nearest', {
+      params: {
+        address,
+      },
+    });
+
+    dispatch(setSearches(response.data.payload.market));
+
+    dispatch(setLoading(false));
     navigateToDashboard();
   } catch (error) {
     dispatch(setError(true));
