@@ -20,7 +20,7 @@ export function FormModal(props: ModalProps) {
         {props.btnText}
       </button>
       <Modal
-        title="Basic Modal"
+        title={props.btnText}
         visible={open}
         onOk={handleOk}
         onCancel={handleCancel}
