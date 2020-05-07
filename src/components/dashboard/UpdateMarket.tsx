@@ -15,9 +15,9 @@ const App = ({
   updateMarket,
   data,
 }: {
-  uploadImg: any;
-  updateMarket: any;
-  data: any;
+  uploadImg?: any;
+  updateMarket?: any;
+  data?: any;
 }) => {
   const {errorMessage} = useSelector(
     (error: {error: boolean; errorMessage: string}) => error,
