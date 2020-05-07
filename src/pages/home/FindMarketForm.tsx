@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import {searchMarket} from '../../redux/actions/market.action';
+import FormError from '../../components/form/FormError';
 
 const initialValues = {
   searchBy: '',
@@ -16,10 +17,12 @@ const App = ({
   searchMarket,
   loading,
   history,
+  errorMessage,
 }: {
-  searchMarket: any;
-  history: any;
-  loading: any;
+  searchMarket?: any;
+  history?: any;
+  loading?: any;
+  errorMessage?: any;
 }) => {
   return (
     <Formik
@@ -38,7 +41,7 @@ const App = ({
     >
       {formik => (
         <form className="form-horizontal m-t-30" onSubmit={formik.handleSubmit}>
-          {/* <FormError error={errorMessage} /> */}
+          <FormError error={errorMessage} />
           <div className="form-group">
             <label htmlFor="searchBy">Search By</label>
 
@@ -86,9 +89,11 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: any) => {
-  const {markets} = state;
+  const {markets, error} = state;
+
   return {
     loading: markets.loading,
+    errorMessage: error.errorMessage,
   };
 };
 
