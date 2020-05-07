@@ -10,7 +10,7 @@ import Pagination from 'antd/lib/pagination';
 
 import {Container} from '../../components/container';
 import getMarkets from '../../redux/actions/market.action';
-import {FormModal} from './Modal';
+import {FormModal} from './modal';
 import FindMarketForm from './FindMarketForm';
 import GetNearestForm from './GetNearestForm';
 import {setMarketId} from '../../redux/actions/market.action';
