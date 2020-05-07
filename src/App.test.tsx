@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import App from './App';
 import store from './store';
 
-test('renders learn react link', () => {
+test('renders app', () => {
   const {container} = render(
     <Provider store={store}>
       <App />
@@ -14,21 +14,17 @@ test('renders learn react link', () => {
   expect(container).toMatchInlineSnapshot(`
     <div>
       <div
-        class="App"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);"
       >
         <div
-          style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+          class="css-pzdxlx"
         >
           <div
-            class="css-pzdxlx"
-          >
-            <div
-              class="css-h7t4y2"
-            />
-            <div
-              class="css-1hwqqnv"
-            />
-          </div>
+            class="css-h7t4y2"
+          />
+          <div
+            class="css-1b5ezdw"
+          />
         </div>
       </div>
     </div>

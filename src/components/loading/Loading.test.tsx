@@ -16,7 +16,7 @@ test('renders loading spinner', () => {
             class="css-h7t4y2"
           />
           <div
-            class="css-1hwqqnv"
+            class="css-1b5ezdw"
           />
         </div>
       </div>
