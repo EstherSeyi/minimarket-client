@@ -1,20 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {CaretRightOutlined, CaretLeftOutlined} from '@ant-design/icons';
 
 import './style.css';
 import img from '../../static/images/dummy.jpg';
 
-const App = () => {
-  const next = () => {};
-  const back = () => {};
+const App = (props: any) => {
+  const [num, setNum] = useState(0);
+
+  // console.log(props.images);
+
+  const next = () => {
+    console.log('clicked');
+    if (num < 2) {
+      setNum(prevState => prevState + 1);
+    } else {
+      setNum(0);
+    }
+  };
+  const prev = () => {
+    if (num > 0) {
+      setNum(prevState => prevState - 1);
+    } else {
+      setNum(2);
+    }
+  };
 
   return (
     <div className="main-image">
-      <img src={img} alt="a man wearing goggles" />
+      <div className="carousel-image">
+        <img src={props.images ? props.images[num] : img} alt="market photos" />
+      </div>
 
-      <div>
-        <CaretLeftOutlined className="carousel-icon" />
-        <CaretRightOutlined className="carousel-icon" />
+      <div className="carets">
+        <CaretLeftOutlined className="carousel-icon" onClick={() => prev()} />
+        <CaretRightOutlined className="carousel-icon" onClick={() => next()} />
       </div>
     </div>
   );
