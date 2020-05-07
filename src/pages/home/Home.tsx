@@ -5,19 +5,22 @@ import {BsArrowDown} from 'react-icons/bs';
 import {Link} from 'react-scroll';
 import {Link as RouteLink} from 'react-router-dom';
 import Truncate from 'react-truncate';
-import {connect, useSelector} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import Pagination from 'antd/lib/pagination';
 
 import {Container} from '../../components/container';
 import getMarkets from '../../redux/actions/market.action';
-import {FormModal} from './modal';
+import {FormModal} from './Modal';
 import FindMarketForm from './FindMarketForm';
 import GetNearestForm from './GetNearestForm';
+import {setMarketId} from '../../redux/actions/market.action';
 
 import 'animate.css';
 import './home.css';
 
 const Home = (props: {getMarkets: any}) => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     props.getMarkets();
   }, [props]);
@@ -45,7 +48,9 @@ const Home = (props: {getMarkets: any}) => {
     }
   };
 
-  console.log(markets, 'DASHBOARD');
+  const handleClick = (id: string) => {
+    dispatch(setMarketId(id));
+  };
 
   return (
     <>
@@ -87,7 +92,11 @@ const Home = (props: {getMarkets: any}) => {
             {data &&
               data.length > 0 &&
               data.slice(page.minValue, page.maxValue).map((market: any) => (
-                <RouteLink key={market._id} to="#">
+                <RouteLink
+                  key={market._id}
+                  to="/market"
+                  onClick={() => handleClick(market._id)}
+                >
                   <div className="market">
                     <div className="market-image">
                       <img src={market.images[0]} alt={`${market.name}`} />
