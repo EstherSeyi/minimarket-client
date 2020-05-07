@@ -27,12 +27,12 @@ const App = ({
     <Formik
       initialValues={initialValues}
       validationSchema={Yup.object({
-        searchBy: Yup.string().required('Please provide your address!'),
+        address: Yup.string().required('Please provide your address!'),
       })}
       onSubmit={async (values): Promise<void> => {
         const navigateToDashboard = () => history.push('/search');
 
-        await getNearestMarket(values, navigateToDashboard);
+        await getNearestMarket(values.address, navigateToDashboard);
       }}
     >
       {formik => (

@@ -210,11 +210,11 @@ export const getNearestMarket = (
 
     const response = await request.get('/market/nearest', {
       params: {
-        address,
+        market: address,
       },
     });
 
-    dispatch(setSearches(response.data.payload.market));
+    dispatch(setSearches(response.data.payload));
 
     dispatch(setLoading(false));
     navigateToDashboard();

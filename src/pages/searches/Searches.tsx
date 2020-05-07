@@ -102,8 +102,6 @@ const App = ({searches, loading}: {searches?: any; loading?: any}) => {
 };
 
 const mapStateToProps = (state: any) => {
-  console.log(state);
-
   const {markets} = state;
   return {
     loading: markets.loading,
