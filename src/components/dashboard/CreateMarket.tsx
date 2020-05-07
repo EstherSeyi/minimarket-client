@@ -28,9 +28,11 @@ const App = ({
   uploadImg: any;
   createMarket: any;
 }) => {
-  const {errorMessage} = useSelector(
-    (error: {error: boolean; errorMessage: string}) => error,
+  const {error} = useSelector(
+    (error: {error: {error: boolean; errorMessage: string}}) => error,
   );
+
+  const {errorMessage} = error;
 
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
